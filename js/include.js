@@ -23,7 +23,6 @@ function linechart(datas){
 		labels[key] = val[2]['district'];
 		data1[key] = val[0]['data'][5];
 		data2[key] = val[1]['data'][5];
-
 	});
 
 	var options = {	
@@ -37,8 +36,8 @@ function linechart(datas){
 		scaleShowLabels : true,			
 		scaleLabel : "<%=value%>",			
 		scaleFontFamily : "'Helvetica'",			
-		scaleFontSize : 12,			
-		scaleFontStyle : "normal",			
+		scaleFontSize : 12,
+		scaleFontStyle : "normal",
 		scaleFontColor : "#666",				
 		scaleShowGridLines : false,			
 		scaleGridLineColor : "rgba(0,0,0,.05)",	
@@ -72,7 +71,7 @@ function linechart(datas){
 				pointStrokeColor : "#454447",
 				data : data2
 			}
-		]			
+		]
 	}
 	var myLine = new Chart(document.getElementById("linechart").getContext("2d")).Line(lineChartData,options);
 	window.slideval = lineChartData.datasets;
@@ -150,7 +149,6 @@ function bar(stats_set,datas,thisyear){
 	window.labels;
 	window.data1;
 	window.data2;
-
 	var newData = new Array;
 
 	$.each(labels, function(key,val){
@@ -240,9 +238,6 @@ function pushSparklines(stats_set, getdata, min_year, thisyear){
 	});
 	newData.sort(function(a, b){ return b.data2-a.data2 });
 
-
-
-
 	var thisdata = newData[1];
 
 	var Bbelia = thisdata['data2'];
@@ -306,51 +301,77 @@ function indicator(x) {
 }
 
 function tableData(datas){
+
 	var tableData = new Array;
-	var belia = new Array;
-	var penduduk = new Array;
-	var Bdiff, Bdiffpct, Pdiff, Pdiffpct, Brank, Prank;
+	var data_0 = new Array;
+	var data_1 = new Array;
+	var left, right, Ldiff, Ldiffpct, Rdiff, Rdiffpct, Lrank, Rrank, total;
 
-	$.each(datas, function(key, val){
-		belia[key] = val['belia'][5];
-		penduduk[key] = val['penduduk'][5];
+	summarize(datas['b']);
 
+	left = window.left;
+	right = window.right;
+
+	var Lmax = left.max();
+	var Rmax = right.max();
+
+	$.each(datas['b'], function(key, val){
+		left = val['t'][0]['v'];
+		right = val['t'][1]['v'];
+
+		Ldiff = left-right;
+		Ldiffpct = output((Ldiff/ left * 100),1);
+		Rdiffpct = output((100 - Ldiffpct),1);
+
+		Lrank = (left/ Lmax * 100);
+		Rrank = (right/ Rmax * 100);
+
+		tableData[key] = {
+			id: key,
+			series_0: val['r'][0]['v'],
+			series_1: val['r'][1]['v'],
+			data_0: left,
+			data_1: right,
+			Ldiffpct: Ldiffpct,
+			Rdiff: Rdiff,
+			Rdiffpct: Rdiffpct,
+			Lstyle: indicator(Lrank),
+			Rstyle: indicator(Rrank),
+			Lrank: output(Lrank,9),
+			Rrank: output(Rrank,9)
+		};
 	});
-	$('.Bmean').text(output(belia.mean()));
-	$('.Bmode').text(output(belia.sum()));
-	$('.Bmedian').text(output(belia.median()));
-	$('.Bmin').text(output(belia.min()));
-	$('.Bmax').text(output(belia.max()));
 
-	$('.Pmean').text(output(penduduk.mean()));
-	$('.Pmode').text(output(penduduk.sum()));
-	$('.Pmedian').text(output(penduduk.median()));
-	$('.Pmin').text(output(penduduk.min()));
-	$('.Pmax').text(output(penduduk.max()));
+	var fullpercentage = '<div class="tddiv pcnt_container fullpercentage"><div class="tddiv data">${ Ldiffpct }%</div><div class="tddiv percentage aleft" id="Ldiffpct_${ id }" style="width: ${ Ldiffpct }%"></div></div>';
 
-	$.each(datas, function(key, val){
-		Bdiff = val['penduduk'][5]-val['belia'][5];
-		Pdiffpct = output((Bdiff/ val['penduduk'][5] * 100),0);
-		Bdiffpct = (100 - Pdiffpct);
-		Brank = (val['belia'][5]/ belia.max() * 100);
-		Prank = (val['penduduk'][5]/ penduduk.max() * 100);
+	var Rrank = '<div class="tddiv pcnt_container"><div class="tddiv data">${ data_1 }</div><div class="tddiv percentage ${ Rstyle } aright" id="Rpcnt_${ id }" style="width: ${ Rrank }%"></div></div>';
 
-		tableData[key] = {state: val['state'], district: val['district'], data1: val['penduduk'][5], data2: val['belia'][5], Bdiffpct: Bdiffpct+'%', Pdiff: Pdiff, Pdiffpct: Pdiffpct+'%', Bstyle: indicator(Brank), Pstyle: indicator(Prank), Brank: Brank+'%', Prank: Prank+'%'};
-	});
+	var Lrank = '<div class="tddiv pcnt_container"><div class="tddiv data">${ data_0 }</div><div class="tddiv percentage ${ Lstyle } aleft" id="Lpcnt_${ id }" style="width: ${ Lrank }%"></div></div>';	
 
-	// console.log(belia.mean());
+	var name = '<div class="tddiv title_container">${ series_1 }</div><span class="hide">@@${ id }</span><div class="info_container" id="ic_${ id }"><div class="info"></div></div>';	
 
 
-	var fullpercentage = '<div class="fullpercentage"><span style="width: ${ Bdiffpct }">${ Bdiffpct }</span><span style="width: ${ Pdiffpct }; background-color:transparent;">${ Pdiffpct }</span></div>';
-	var prank = '<div class="pcnt_container left"><div class="data">${ data1 }</div><div class="percentage prank ${ Pstyle } left" style="width: ${ Prank }"></div></div>';
-	var brank = '<div class="pcnt_container left"><div class="data">${ data2 }</div><div class="percentage brank ${ Bstyle }" style="width: ${ Brank }"></div></div>';
-
-
-	$("#compare").kendoGrid({
+	var grid = $("#compare").kendoGrid({
 	    dataSource: {
 	        data: tableData
 	        // ,pageSize: 10
+	        , schema: {
+				model: {
+					id: "id",
+				    fields: {
+				        series_1: { type: "string" },
+				        data_0: { type: "number" },
+				        data_1: { type: "number" },
+				        Rdiffpct: { type: "number" }
+				    }
+				}
+			},
+			autoBind: false
 	    },
+		change: subInfo,
+		dataBound: onDataBound,
+		dataBinding: onDataBinding,
+		selectable: "row",
 	    sortable:{
             mode: "single",
             allowUnsort: false
@@ -358,25 +379,232 @@ function tableData(datas){
         scrollable: false,
 	    pageable: false,
 	    columns: [{
-	        field: "state",
-	        title: "State"
+	        field: "series_1",
+	        title: "Disease",
+            filterable: false, 
+	        template: kendo.template(name)
 	    }, {
-	        field: "district",
-	        title: "District"
+	        field: "data_0",
+	        title: "Admitted",
+	        width: 100, 
+	        template: kendo.template(Lrank)
 	    }, {
-	        field: "data2",
-	        title: "Kes Denggi",
-	        width: 100,
-	        template: kendo.template(brank)
-	    }, {
-	        field: "Pdiffpct",
+	        field: "Rdiffpct",
 	        title: "Percentage",
-	        template: kendo.template(fullpercentage)
+	        template: kendo.template(fullpercentage),
+	        width: 100
 	    }, {
-	        field: "data1",
-	        title: "Penduduk",
-	        width: 100,
-	        template: kendo.template(prank)
+	        field: "data_1",
+	        title: "Death",
+	        width: 100, 
+	        template: kendo.template(Rrank)
 	    }]
 	});
+
+	var autocompleteSymbol = $("#search").kendoAutoComplete({
+	    dataTextField: "series_1",
+	    dataValueField: "series_1",
+	    dataSource: tableData,
+	    change: function () {
+
+	    	var filtered;
+	        var value = this.value();
+	        if (value) {
+	            grid.data("kendoGrid").dataSource.filter({ field: "series_1", operator: "contains", value: value });
+	        } else {
+	            grid.data("kendoGrid").dataSource.filter({});
+	        }
+
+		    filtered = grid.data("kendoGrid")["_data"];
+	    	if(filtered.length){
+		        summarize(filtered);
+		        resetRank(filtered);
+		        grid.data("kendoGrid").dataSource.filter({ field: "series_1", operator: "contains", value: value });
+	    	}   
+	    }
+	});
+}
+
+function summarize(data){
+	window.left = Array();
+	window.right = Array();
+
+	$.each(data, function(key, val){
+		window.left[key] = (check(val['t']))? val['t'][0]['v'] : val['data_0'];
+		window.right[key] = (check(val['t']))? val['t'][1]['v'] : val['data_1'];
+    });
+
+	$('.Bmean').text(output(window.left.mean(),2));
+	$('.Bmode').text(output(window.left.sum(),0));
+	$('.Bmedian').text(window.left.median());
+	$('.Bmin').text(output(window.left.min(),0));
+	$('.Bmax').text(output(window.left.max(),0));
+
+	$('.Pmean').text(output(window.right.mean(),2));
+	$('.Pmode').text(output(window.right.sum(),0));
+	$('.Pmedian').text(window.right.median());
+	$('.Pmin').text(output(window.right.min(),0));
+	$('.Pmax').text(output(window.right.max(),0));
+}
+
+function resetRank(data){
+	var left, right, Lrank, Rrank, total;
+
+	var Lmax = window.left.max();
+	var Rmax = window.right.max();
+
+	$.each(data, function(key, val){
+		left = (check(val['t']))? val['t'][0]['v'] : val['data_0'];
+		right = (check(val['t']))? val['t'][1]['v'] : val['data_1'];
+		Lrank = (left/ Lmax * 100);
+		Rrank = (right/ Rmax * 100);
+		data[key]['Lrank'] = Lrank;
+		data[key]['Rrank'] = Rrank;
+	});
+}
+
+
+function subInfo(arg) {
+    var selected = $.map(this.select(), function(item) {
+    	var el = $(item).html();
+    	var result;
+    	$(el, "td").each(function(index){
+    		if(index == 0){
+    			result = $(this).text().split("@@");
+    			getSubInfo(result[1]);
+    		}
+    	});
+    });
+    return false;
+}
+
+function getSubInfo(thatval){	
+	var div = $('#ic_'+thatval);
+	var linechart;
+	var series1 = Array();
+
+	if(div.hasClass('active')){
+		div.removeClass('active');
+	} else {
+		var data = window.loaddata['b'][thatval]['s'];
+		linechart = $(drawlinechart(data));
+		$('.info', div).append(linechart);
+
+		$('.info_container').removeClass('active');
+		div.addClass('active');
+	}
+
+}
+
+function drawlinechart(data){
+	// console.log(data);
+	var table = '<table class="subdata" cellspacing="1" cellpadding="0">';
+	var sr1 = {};
+	var th = {};
+	var td = {};
+	var td2 = {};
+	var i = 0;
+
+	$.each(data[0]['b'], function(key, val) { //r10
+		rowid = val['r'][0]['v']; // agegroupcode
+		th[rowid] = th[rowid] || new Array();
+		td[rowid] = td[rowid] || new Array();
+		td2[rowid] = td2[rowid] || new Array();
+
+		th[rowid].push(val['r'][1]['d']);
+		td[rowid].push(val['r'][1]['v']);
+
+		$.each(val['t'], function(Tkey, Tval) { //td1(t)
+			th[rowid].push(Tval['d']);
+			td[rowid].push(Tval['v']);
+		});
+
+		$.each(val['s'], function(Skey, Sval) { //td2(s)(agegroupcode)
+
+			$.each(Sval['b'], function(Bkey, Bval) { //td20(s)(genderengdesc)
+				sr1[i] = Bval['r'][0]['v'];
+
+				$.each(Bval['t'], function(tkey, tval) { //td200(s)(death & discharge value)
+					td2[rowid][sr1[i]] = td2[rowid][sr1[i]] || new Array();
+					td2[rowid][sr1[i]].push(tval['v']);
+				});
+				i++;
+
+			});
+
+		});
+
+	});
+
+	sr1Filtered = unique(sr1);
+
+	$.each(td2, function(key1,val1){ // sub values pushed into parent tr
+		$.each(sr1Filtered, function(key, val){
+			v = (typeof val1[val] != 'undefined')? val1[val]: 0;
+			td[key1].push(v);
+			th[key1].push(val);
+		});
+	});			
+
+	i = 0;
+
+	console.log(td, td2);
+	$.each(td, function(key, val){
+		if(i==0){
+			table += '<thead>';
+			$.each(th[1], function(key2, val2){
+				table += '<th>'+val2+'</th>';
+			});
+			table += '</thead>';
+		}
+		i++;
+
+		table += '<tr>';
+		$.each(val, function(key1, val1){
+			table += '<td><div class="tddiv title_container">'+val1+'</div></td>';
+		});
+		table += '</tr>';
+	});
+
+	table += '</table>';
+	return table;
+}
+
+function calc(data){
+	var s = data.sum();
+	var r = Array();
+
+	$.each(data, function(key, val){
+		r[key] = output(val/s*100,1);
+	});
+	return r;
+}
+
+
+function onDataBound(arg) {
+	// console.log("Grid data bound");
+}
+
+function onDataBinding(arg) {
+	// console.log("Grid data binding");
+}
+
+function check(that){
+	if (typeof that == 'undefined'){
+		return false;
+	} else {
+		return true;
+	}
+}
+
+function unique(array) {
+	var unique = {};
+	var distinct = [];
+	for( var i in array ){
+		if( typeof(unique[array[i]]) == "undefined"){
+			distinct.push(array[i]);
+		}
+		unique[array[i]] = 0;
+	}
+	return distinct;
 }

@@ -1,17 +1,15 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Chart Engine</title>
-		<meta name = "viewport" content = "initial-scale = 1, user-scalable = yes">
+		<title>Reference Chart</title>
+		<meta name = "viewport" content = "initial-scale = 1, user-scalable = no">
 		<script src="js/Chart.min.js"></script>
 		<link rel="stylesheet" href="css/jquery-ui.min.css">
-    	<!-- <link href="css/kendo.common.min.css" rel="stylesheet"> -->
-    	<link href="css/kendo.default.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="css/style.css">
 		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
 		<script src="js/jquery.ui.touch-punch.min.js"></script>
-    	<script src="js/kendo.all.min.js"></script>
+    	<script src="js/kendo.web.min.js"></script>
 		<script src='js/include.js'></script>
 		<script src='js/psMathStats.min.js'></script>
 	</head>
@@ -19,106 +17,66 @@
 <body style="background-color: transparent;">
 
 <div class="container">
-
-	<!-- <div class="header">
-		<span class="bookmark"></span><h1 class="title">Comparison Chart</h1>
-	</div>
-	<div class="clear"></div> -->
-
 	<div class="content">
-		<div class="widget_title top15">Reference Chart</div>
-		<div class="widget_title_s bottom15">Graf Kes Denggi di Johor<!-- <span class="title">Batu Pahat</span> --> Untuk Tahun <span class="widget_tahun">2013</span></div>
-		<canvas id="linechart" height="200" width="688"></canvas>
-		<div class="clear"></div>
+	<div class="comparison">
+		<div class="widget_title top15">Reference Chart - Data Overview</div>
+		<div class="widget_title_s">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</div>
 
-	<!-- 	<div class="slider_outer">
-			<div class="slider_inner">
-				<ul class="marker">
-					<li>2008</li>
-					<li>2009</li>
-					<li>2010</li>
-					<li>2011</li>
-					<li>2012</li>
-					<li>2013</li>
-				</ul>
-				<div id="slider"></div>
-			</div>
-		</div> -->
-
-
-		<div class="clear"></div>
-
-		<div class="col2 legend margin15">
-			<dl class="col2">
-				<dt class="grey50 left">Kes Denggi</dt>
-				<dd class="belia_total small left">198,060</dd>
-			</dl>
-			<dl class="col2 active">
-				<dt class="grey50 left">Penduduk</dt>
-				<dd class="pop_total small left">198,060</dd>
-			</dl>
+		<div class="filter top15">
+			<input type="text" id="search" value="Filter" class="input"/>
 		</div>
 
-	</div>
-	<div class="clear"></div>
-
-
-	<div class="comparison">
-		<div class="widget_title top15">Data Overview</div>
-		<div class="widget_title_s">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</div>
 		<div class="bar top15" id="compare" ></div>	
 
 	<div class="clear"></div>
 		<div class="widget_title top15">Summarize main data</div>
 		<div class="widget_title_s bottom15">Neque porro quisquam est qui dolorem ipsum quia dolor sit amet</div>
 
+			<div class="col1">
+				<div class="widget_title top15">Admitted</div>
 
-
-			<div class="col2">
-				<div class="widget_title top15">Kes Denggi</div>
-
-			    <dl class="top15">
+			    <dl class="top15 col5">
 			        <dt class="grey50">Min.</dt>
 			        <dd class="Bmin med">48</dd>
 			    </dl>
-			    <dl class="top15">
-			        <dt class="grey50">Max.</dt>
-			        <dd class="Bmax med">48</dd>
-			    </dl>
-			    <dl class="top15">
-			        <dt class="grey50">Mean</dt>
-			        <dd class="Bmean med">48</dd>
-			    </dl>
-			    <dl class="top15">
+			    <dl class="top15 col5">
 			        <dt class="grey50">Median</dt>
 			        <dd class="Bmedian med">48</dd>
 			    </dl>
-			    <dl class="top15">
+			    <dl class="top15 col5">
+			        <dt class="grey50">Mean</dt>
+			        <dd class="Bmean med">48</dd>
+			    </dl>
+			    <dl class="top15 col5">
+			        <dt class="grey50">Max.</dt>
+			        <dd class="Bmax med">48</dd>
+			    </dl>
+			    <dl class="top15 col5">
 			        <dt class="grey50">Sum</dt>
 			        <dd class="Bmode med">48</dd>
 			    </dl>
 			</div>
 
-			<div class="col2">
-				<div class="widget_title top15">Penduduk</div>
+			<div class="col1 margin15">
+				<div class="widget_title">Death</div>
 
-			    <dl class="top15">
+			    <dl class="top15 col5">
 			        <dt class="grey50">Min.</dt>
 			        <dd class="Pmin med">48</dd>
 			    </dl>
-			    <dl class="top15">
-			        <dt class="grey50">Max.</dt>
-			        <dd class="Pmax med">48</dd>
-			    </dl>
-			    <dl class="top15">
-			        <dt class="grey50">Mean</dt>
-			        <dd class="Pmean med">48</dd>
-			    </dl>
-			    <dl class="top15">
+			    <dl class="top15 col5">
 			        <dt class="grey50">Median</dt>
 			        <dd class="Pmedian med">48</dd>
 			    </dl>
-			    <dl class="top15">
+			    <dl class="top15 col5">
+			        <dt class="grey50">Mean</dt>
+			        <dd class="Pmean med">48</dd>
+			    </dl>
+			    <dl class="top15 col5">
+			        <dt class="grey50">Max.</dt>
+			        <dd class="Pmax med">48</dd>
+			    </dl>
+			    <dl class="top15 col5">
 			        <dt class="grey50">Sum</dt>
 			        <dd class="Pmode med">48</dd>
 			    </dl>
@@ -132,7 +90,16 @@
 </div>
 
 <script>
-	window.javData = '[{"id":100, "district": "Batu Pahat", "state": "Johor", "penduduk": [239600,309594,390200,401963,431400,490374], "belia": [71367,92550,163100,92055,176900,198060]},{"id":101, "district": "Johor Bahru", "state": "Johor", "penduduk": [561811,1033498,1297100,951654,1436500,1499264], "belia": [424115,510839,536900,347064,691700,784733]},{"id":102, "district": "Kluang", "state": "Johor", "penduduk": [170198,238628,283300,205727,300600,334168], "belia": [75642,67823,118000,82198,130600,131227]},{"id":103, "district": "Kota Tinggi", "state": "Johor", "penduduk": [91193,112923,225600,141832,193900,205378], "belia": [61096,67616,96200,63065,82200,82806]},{"id":104, "district": "Kulaijaya", "state": "Johor", "penduduk": [0,0,0,147916,261600,269824], "belia": [0,0,0,66959,130500,136095]},{"id":105, "district": "Ledang", "state": "Johor", "penduduk": [0,0,0,102323,139400,157782], "belia": [0,0,0,30337,55900,66506]},{"id":106, "district": "Mersing", "state": "Johor", "penduduk": [61773,75089,81300,54883,70600,84592], "belia": [20557,32247,34800,16089,27500,30052]},{"id":107, "district": "Muar", "state": "Johor", "penduduk": [187965,232583,372500,162437,255100,285921], "belia": [117530,99382,155000,81140,101300,101643]},{"id":108, "district": "Pontian", "state": "Johor", "penduduk": [69734,103746,163100,128733,157400,169979], "belia": [41242,64242,68300,48453,63300,73449]},{"id":109, "district": "Segamat", "state": "Johor", "penduduk": [173140,195946,197100,156529,193200,217422], "belia": [59530,68731,81800,49164,79000,82434]}]';
+
+	$.ajax({
+			async: false,
+			url: "http://10.1.20.69/mi-bis/test/json3.json",
+			beforeSend: function(xhr) {}
+		}).done(function(data) {
+			window.javData = data;
+	});
+
+	
 
 </script>
 <script src='js/action.js'></script>
