@@ -98,7 +98,7 @@
 			async: false,
 			// diseaseChart3
 			// diseaseChart2
-			url: "../api/", // fetching webservice
+			url: "http://10.1.20.69/mi-bis/api/?src=<?php echo $_GET['src']; ?>", // fetching webservice
 			beforeSend: function(xhr) {}
 		}).done(function(data) {
 			loaddata = data;

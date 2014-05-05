@@ -317,7 +317,7 @@ h1.title {
     line-height: 1em;
 }
 .small {
-	font-size: 0.6em;
+	font-size: 0.67em;
 	font-weight: 100!important;
     line-height: 16px;
 }
@@ -337,7 +337,7 @@ h1.title {
 	text-align: center;
 }
 .widget_title_s {
-	font-size: 0.6em;
+	font-size: 0.67em;
     text-transform: none;
     font-weight: 100;
     text-align: left;
@@ -574,18 +574,27 @@ dd.hline.left {
 }
 .fullpercentage {
 	color: #FFFFFF;
+	background-color: #1C638D;
 }
 
 #compare table{
 	width: 100%;
 }
 
-#compare tr td:nth-child(1) {
+#compare table.k-selectable tr td:nth-child(1) {
 	text-align: left;
 }
-#compare tr td:nth-child(3) {
-	background-color: #1C638D;
+#compare table.subdata tr td:nth-child(1), 
+#compare table.subdata tr td, 
+#compare table.subdata tr th{
+	text-align: center;
 }
+#compare table.subdata tr th{
+	color: #FFFFFF;
+}
+/*#compare tr td:nth-child(3) {
+	background-color: #1C638D;
+}*/
 #compare tr td {
 	text-align: center;
 	height: 22px;
@@ -593,7 +602,7 @@ dd.hline.left {
     text-transform: none;
     font-weight: 100;
 	line-height: 0.9em;
-	font-size: 0.6em;
+	font-size: 0.67em;
 }
 #compare tr td tr td{
 	font-size: inherit;
@@ -619,6 +628,7 @@ dd.hline.left {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 380px;
+    text-transform: capitalize;
 }
 
 .data {
@@ -661,7 +671,7 @@ ul#search_listbox li {
     padding: 6px;
 	display: inline-block;
 	list-style: none;
-	font-size: 0.6em;
+	font-size: 0.67em;
 	background-color: #FFFFFF;
 	border-radius: 4px;
 	border: solid 1px #DEDEDE;
@@ -694,7 +704,8 @@ ul#search_listbox li {
 .info_container {
 	position: relative;
 	z-index: 1;
-	height: 500px;
+	height: 560px;
+	top: 40px;
 	display: none;
 }
 
@@ -720,9 +731,17 @@ ul#search_listbox li {
     height: 22px;
     width: 205px;
 }
+.subdata th .fullpercentage {
+    width: 100%;
+}
 .subdata .title_container {
-	float: left;
-    width: 100px;
+	text-align: center;
+    width: 100%;
+}
+
+.subdata .title_tdcontainer {
+	font-weight: normal;
+    text-transform: uppercase;
 }
 
 #compare .subdata tr td:nth-child(3) {
@@ -746,3 +765,27 @@ ul#search_listbox li {
 .s0{ opacity: 1; }
 .s1{ opacity: .5; }
 .s2{ opacity: .2; }
+
+.title_container.active {
+	background-color: #FFFFFF;
+    height: 40px !important;
+    line-height: 40px !important;
+    position: absolute;
+    text-indent: 10px;
+    width: 686px;
+    z-index: 111;
+    border-left: 6px solid #F7941D;
+}
+
+.thTotal {
+	font-weight: normal;
+	margin-left: 2px;
+}
+.total_tdcontainer,
+.clearHeader,
+.clearHeader div {
+	font-weight: bold;
+	text-transform: uppercase;
+	background-color: #F8F7FA;
+	color: #454447;
+}
